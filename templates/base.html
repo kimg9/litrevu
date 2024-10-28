@@ -1,0 +1,31 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>LITRevu</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% tailwind_css %}
+</head>
+
+<body>
+    <header class='flex border shadow-md py-4 px-4 bg-green-950 font-[sans-serif] min-h-[70px] relative z-50'>
+    {% if user.is_authenticated %}
+        <div class='flex flex-wrap items-end justify-center gap-5 w-full'>
+            <a class='px-4 py-2 text-sm font-bold text-white' href="/">LITReview</a>
+            <a href="{% url 'logout' %}">Se déconnecter</a>
+        </div>
+
+    {% else %}
+        <div class='flex flex-wrap items-end justify-center gap-5 w-full'>
+            <a class='px-4 py-2 text-sm font-bold text-white' href="/">LITReview</a>
+        </div>
+    </header>
+    {% block content %}{% endblock content %}
+    {% endif %}
+
+</body>
+
+</html>
