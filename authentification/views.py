@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from . import forms
 from django.contrib.auth import login, authenticate, logout
+
 from authentification.models import User
+from . import forms
 
 
 def login_page(request):
@@ -43,10 +44,10 @@ def inscription_user(request):
             )
             if user:
                 message = (
-                    "Utilisateur créé. Vous allez être redirigé vers la page d'accueil."
+                    "Utilisateur créé avec succès !"
                 )
             else:
-                message = "Une erreur est survenue. Contactez l'administrateur du site. Vous allez être redirigé vers la page d'accueil."
+                message = "Une erreur est survenue. Contactez l'administrateur du site."
     return render(
         request,
         "authentification/inscription.html",
