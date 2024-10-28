@@ -1,19 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <div>
-        <button type="submit">S'inscrire</button>
-        <a href="/">Retourner</a>
-    </div>
-</form>
-{% if message %}
-<p>{{ message }}</p>
+{% load crispy_forms_tags %}
+
+<div class="flex flex-col gap-5 justify-center items-center w-full">
+    <h2 class="text-xl font-bold my-4">Inscrivez-vous</h2>
+    <form method="post" class="w-96">
+        {{ form|crispy }}
+        {% csrf_token %}
+        <div class="">
+            <button type="submit" class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+                S'inscrire
+            </button>
+            <a href="/">
+                <button type="button"
+                    class="mt-4 text-white bg-green-950 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+                    Retourner
+                </button>
+            </a>
+        </div>
+    </form>
+    {% if message %}
+    <p class="mt-4 text-sm italic">Utilisateur créé avec succès ! Vous allez être redirigé dans <time><strong id="seconds">3</strong> secondes</time>.</p>
+</div>
+
 <script>
-    setTimeout(function () {
-        window.location.href = '/';
-    }, 2000);
+    var el = document.getElementById('seconds'),
+    total = el.innerHTML,
+    timeinterval = setInterval(function () {
+        total = --total;
+        el.textContent = total;
+        if (total <= 0) {
+            clearInterval(timeinterval);
+            window.location.href = '/';
+        }
+    }, 1500);
 </script>
 {% endif %}
 {% endblock content %}

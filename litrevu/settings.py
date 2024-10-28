@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'tailwind',
     'theme',
+    'crispy_forms',
+    'crispy_tailwind',
     "authentification",
 ]
 
@@ -131,3 +133,7 @@ AUTH_USER_MODEL = "authentification.User"
 
 # settings.py
 TAILWIND_APP_NAME = 'theme'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
