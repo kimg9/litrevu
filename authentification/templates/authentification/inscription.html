@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <div>
+        <button type="submit">S'inscrire</button>
+        <a href="/"><button>Retourner</button></a>    
+    </div>
+</form>
+{% if message %}
+<p>{{ message }}</p>
+<script>
+    setTimeout(function(){
+         window.location.href = '/';
+      }, 2000);
+</script>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,18 @@
+<html>
+
+<head>
+    <title>LITRevu</title>
+</head>
+
+<body>
+    <h1>LITRevu</h1>
+    {% if user.is_authenticated %}
+    <p>Vous êtes connecté en tant que {{ request.user }}.
+        <a href="{% url 'logout' %}">Se déconnecter</a>
+    </p>
+    {% else %}
+        {% block content %}{% endblock content %}
+    {% endif %}
+</body>
+
+</html>
