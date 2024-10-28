@@ -5,15 +5,15 @@
     {% csrf_token %}
     <div>
         <button type="submit">S'inscrire</button>
-        <a href="/"><button>Retourner</button></a>    
+        <a href="/">Retourner</a>
     </div>
 </form>
 {% if message %}
 <p>{{ message }}</p>
 <script>
-    setTimeout(function(){
-         window.location.href = '/';
-      }, 2000);
+    setTimeout(function () {
+        window.location.href = '/';
+    }, 2000);
 </script>
 {% endif %}
 {% endblock content %}
