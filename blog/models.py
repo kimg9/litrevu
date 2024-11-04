@@ -9,8 +9,6 @@ class Ticket(models.Model):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True)
     time_created = models.DateTimeField(auto_now_add=True)
-    # Question auto_now_add ? 
-    # https://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add
 
 
 class Review(models.Model):
