@@ -3,11 +3,15 @@ from django.conf import settings
 from django.db import models
 
 
+def user_directory_path(instance, filename):
+    return "media/uploads/user_{0}/{1}".format(instance.user.id, filename)
+
+
 class Ticket(models.Model):
     title = models.CharField(max_length=128)
-    description = models.CharField(max_length=2048, blank=True)
+    description = models.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(null=True)
+    image = models.ImageField(null=True, upload_to=user_directory_path)
     time_created = models.DateTimeField(auto_now_add=True)
 
 
@@ -19,7 +23,7 @@ class Review(models.Model):
     )
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     headline = models.CharField(max_length=128)
-    body = models.CharField(max_length=8192, blank=True)
+    body = models.TextField(max_length=8192, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
 
 
