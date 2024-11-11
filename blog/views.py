@@ -1,6 +1,10 @@
 from django.shortcuts import render
+from django.forms.models import modelformset_factory
+
+
 from . import forms
 from .models import Ticket
+
 
 class FluxView:
     def view(request):
@@ -17,28 +21,25 @@ class TicketView:
     def create_ticket_page(request):
         form = forms.TicketForm()
         message = ""
-        
+
         if request.method == "POST":
-            form = forms.TicketForm(request.POST, request.FILES)
-            if form.is_valid():
-                try:
-                    Ticket.objects.create(
-                        title = form.cleaned_data["title"],
-                        description = form.cleaned_data["description"],
-                        user = request.user,
-                        image = form.cleaned_data["image"],
-                    )
-                except:
-                    message = "Quelque chose n'a pas fonctionné. Veuillez contacter votre administrateur."
-                else:
-                    message = "✅ Ticket créé avec succès."
+            ticket_form = forms.TicketForm(request.POST, request.FILES)
+            if ticket_form.is_valid():
+                ticket = ticket_form.save(commit=False)
+                ticket.user = request.user
+                ticket.save()
+                
+                print(ticket)
+
+                message = "✅ Ticket créé avec succès."
 
         return render(
             request,
             "blog/ticket.html",
             context={"form": form, "message": message},
         )
-# Different approach, better ? 
+
+
 # https://stackoverflow.com/questions/680770/django-imagefield-not-working-properly-via-modelform
 
 
@@ -66,10 +67,37 @@ class AbonnementView:
 
 class CritiqueView:
     def create_critique_page(request):
+        ChoiceFormSet = modelformset_factory(
+            Ticket, validate_min=True, form=forms.TicketForm
+        )
+
+        form = forms.ReviewForm()
+        formset = ChoiceFormSet(queryset=Ticket.objects.none())
         message = ""
+
+        if request.method == "POST":
+            critique_form = forms.ReviewForm(request.POST)
+            ticket_form = ChoiceFormSet(request.POST, request.FILES)
+
+            if all([critique_form.is_valid(), ticket_form.is_valid()]):
+                cd = ticket_form.cleaned_data[0]
+                ticket = Ticket(
+                    title=cd['title'],
+                    description=cd['description'],
+                    user=request.user,
+                    image=cd['image'],
+                )
+                ticket.save()
+
+                critique = critique_form.save(commit=False)
+                critique.ticket = ticket
+                critique.user = request.user
+                critique.save()
+
+                message = "✅ Critique créée avec succès."
 
         return render(
             request,
             "blog/critique.html",
-            context={"message": message},
+            context={"form": form, "formset": formset, "message": message},
         )

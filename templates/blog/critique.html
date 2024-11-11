@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="flex flex-col gap-5 justify-center items-center w-full">
+    <h2 class="text-xl font-bold my-4">Créer une critique</h2>
+    <form enctype="multipart/form-data" method="post" class="w-full">
+        <div class="border border-solid border-black p-2 mb-2">
+            <h3 class="font-black pb-3">Livre/Article</h3>
+            {{ formset|crispy }}
+        </div>
+        <div class="border border-solid border-black p-2">
+            <h3 class="font-black pb-3">Critique</h3>
+            {{ form|crispy }}
+        </div>
+        {% csrf_token %}
+        <button type="submit" class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+            Envoyer
+        </button>
+        {% if message %}
+        <p class="mt-4 text-sm italic">{{ message }}</p>
+        {% endif %}
+    </form>
+
+</div>
+
+{% endblock content %}
