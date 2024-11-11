@@ -162,5 +162,5 @@ cython_debug/
 #.idea/
 
 litrevu-env/
-litrevu.db
+*.db
 media/
