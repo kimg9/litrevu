@@ -5,11 +5,11 @@
 <div class="flex flex-col gap-5 justify-center items-center w-full">
     <h2 class="text-xl font-bold my-4">Créer une critique</h2>
     <form enctype="multipart/form-data" method="post" class="w-full">
-        <div class="border border-solid border-black p-2 mb-2">
+        <div class="border border-solid border-grey p-2 mb-2 rounded">
             <h3 class="font-black pb-3">Livre/Article</h3>
             {{ formset|crispy }}
         </div>
-        <div class="border border-solid border-black p-2">
+        <div class="border border-solid border-grey p-2 rounded">
             <h3 class="font-black pb-3">Critique</h3>
             {{ form|crispy }}
         </div>

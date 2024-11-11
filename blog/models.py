@@ -4,7 +4,7 @@ from django.db import models
 
 
 def user_directory_path(instance, filename):
-    return "media/uploads/user_{0}/{1}".format(instance.user.id, filename)
+    return "uploads/user_{0}/{1}".format(instance.user.id, filename)
 
 
 class Ticket(models.Model):

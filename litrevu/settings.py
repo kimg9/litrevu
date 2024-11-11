@@ -70,6 +70,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -84,7 +85,7 @@ WSGI_APPLICATION = "litrevu.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "litrevu.db",
+        "NAME": BASE_DIR / "litrevu_test.db",
     }
 }
 
@@ -139,4 +140,5 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 CRISPY_TEMPLATE_PACK = "tailwind"
 
+MEDIA_ROOT = "media/"
 MEDIA_URL = "media/"

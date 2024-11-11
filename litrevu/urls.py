@@ -30,5 +30,5 @@ urlpatterns = [
     path("posts/", blog.PostsView.posts_view_page, name="posts"),
     path("abonnements/", blog.AbonnementView.abonnement_view_page, name="abonnements"),
     path("tickets/", blog.TicketView.create_ticket_page, name="tickets"),
-    path("critiques/", blog.CritiqueView.create_critique_page, name="critiques"),
+    path("reviews/", blog.ReviewView.create_review_page, name="reviews"),
 ]
