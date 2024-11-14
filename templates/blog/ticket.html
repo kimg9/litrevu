@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load crispy_forms_tags %}
+{% block content %}
 
 <div class="flex flex-col gap-5 justify-center items-center w-full">
-    <h2 class="text-xl font-bold my-4">Créer un ticket</h2>
+    <h2 class="text-xl font-bold my-4">{{ title }}</h2>
     <form enctype="multipart/form-data" method="post" class="w-full">
         {{ form|crispy }}
         {% csrf_token %}

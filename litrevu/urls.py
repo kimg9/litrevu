@@ -16,7 +16,9 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
+from django.conf import settings
+from django.conf.urls.static import static
 
 import authentification.views as auth
 import blog.views as blog
@@ -31,4 +33,6 @@ urlpatterns = [
     path("abonnements/", blog.AbonnementView.abonnement_view_page, name="abonnements"),
     path("tickets/", blog.TicketView.create_ticket_page, name="tickets"),
     path("reviews/", blog.ReviewView.create_review_page, name="reviews"),
-]
+    re_path(r'^review/(?P<post_id>[-\w]+)/$', blog.ReviewView.update_review_page, name="update_review_page"),
+    re_path(r'^ticket/(?P<post_id>[-\w]+)/$', blog.TicketView.update_ticket_page, name="update_ticket_page"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
