@@ -3,6 +3,7 @@ from django.forms.models import modelformset_factory
 
 from .models import Ticket
 from .models import Review
+from .models import UserFollows
 
 
 class TicketForm(forms.ModelForm):

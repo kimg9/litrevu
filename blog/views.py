@@ -2,8 +2,9 @@ from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.forms.models import modelformset_factory
 
+from authentification.models import User
 from . import forms
-from .models import Review, Ticket
+from .models import Review, Ticket, UserFollows
 
 
 class FluxView:
@@ -14,6 +15,32 @@ class FluxView:
             request,
             "blog/flux.html",
             context={"message": message},
+        )
+
+
+class PostsView:
+    def posts_view_page(request):
+        message = ""
+
+        tickets = Ticket.objects.filter(user=request.user)
+        reviews = Review.objects.filter(user=request.user)
+
+        for review in reviews:
+            print(review.pk)
+
+        star_rating = ""
+        for review in reviews:
+            for _ in range(review.rating):
+                star_rating += "★"
+            review.rating = star_rating
+
+        posts = list(tickets) + list(reviews)
+        sorted_posts = sorted(posts, key=lambda k: k.time_created, reverse=True)
+
+        return render(
+            request,
+            "blog/posts.html",
+            context={"message": message, "posts": sorted_posts},
         )
 
 
@@ -71,43 +98,6 @@ class TicketView:
             request,
             "blog/confirmation_page.html",
             context={"post": ticket, "message": message},
-        )
-
-
-class PostsView:
-    def posts_view_page(request):
-        message = ""
-
-        tickets = Ticket.objects.filter(user=request.user)
-        reviews = Review.objects.filter(user=request.user)
-
-        for review in reviews:
-            print(review.pk)
-
-        star_rating = ""
-        for review in reviews:
-            for _ in range(review.rating):
-                star_rating += "★"
-            review.rating = star_rating
-
-        posts = list(tickets) + list(reviews)
-        sorted_posts = sorted(posts, key=lambda k: k.time_created, reverse=True)
-
-        return render(
-            request,
-            "blog/posts.html",
-            context={"message": message, "posts": sorted_posts},
-        )
-
-
-class AbonnementView:
-    def abonnement_view_page(request):
-        message = ""
-
-        return render(
-            request,
-            "blog/abonnement.html",
-            context={"message": message},
         )
 
 
@@ -186,4 +176,34 @@ class ReviewView:
             request,
             "blog/confirmation_page.html",
             context={"post": review, "message": message},
+        )
+
+
+class AbonnementView:
+    def abonnement_view_page(request):
+        follows = UserFollows.objects.filter(user=request.user)
+        followed_by = UserFollows.objects.filter(followed_user=request.user)
+        message = ""
+        
+
+        if 'search' in request.POST:
+            searched_username = request.POST['search']
+            try:
+                followed_user = User.objects.get(username=searched_username)
+            except User.DoesNotExist:
+                message = "L'utilisateur recherché n'existe pas."
+            else:
+                UserFollows.objects.create(
+                    user=request.user,
+                    followed_user=followed_user
+                )
+        elif 'unsubscribe' in request.POST:
+            followed_user = request.POST['unsubscribe']
+            user_follow = get_object_or_404(UserFollows, user=request.user, followed_user_id=followed_user)
+            user_follow.delete()
+
+        return render(
+            request,
+            "blog/abonnement.html",
+            context={"message": message, "follows": follows, "followed_by": followed_by},
         )

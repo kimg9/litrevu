@@ -1,3 +1,59 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
+<div class="w-full">
+    <h3 class="text-xl font-bold mt-4 mb-0">Suivre d'autres utilisateurs</h3>
+    <form enctype="multipart/form-data" method="post" class="w-full">
+        {% csrf_token %}
+        <input type="search" name="search" action='.' />
+        <button type="submit" class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+            Envoyer</button>
+    </form>
+
+    {% if message %}
+    <p class="text-red">{{ message }}</p>
+    {% endif %}
+
+    <h3 class="text-xl font-bold mt-10">Abonnements</h3>
+    {% if not follows %}
+    <p>Vous n'êtes abonnés à aucun utilisateur.</p>
+    {% else %}
+    <table class="table-fixed border-collapse border border-slate-500 w-full">
+        <tbody>
+            {% for followed_user in follows %}
+            <tr>
+                <td class="p-1 w-10/12 border border-slate-600">
+                    {{ followed_user.followed_user.username }}</td>
+                <td class="w-2/12 border border-slate-600 bg-slate-800 hover:bg-red-600">
+                    <form enctype="multipart/form-data" method="post" class="w-full">
+                        {% csrf_token %}
+                        <input type="text" name="unsubscribe" value="{{ followed_user.followed_user.id }}"
+                            class="hidden">
+                        <button type="submit" class="w-full max-h-fit text-white">
+                            Se désabonner
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <h3 class="text-xl font-bold mt-10">Abonnés</h3>
+    {% if not followed_by %}
+    <p>Aucun utilisateur vous suit.</p>
+    {% else %}
+    <table class="table-fixed border-collapse border border-slate-500 w-full">
+        <tbody>
+            {% for following_user in followed_by %}
+            <tr>
+                <td class="p-1 w-10/12 border border-slate-600">{{ following_user.user.username }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
 {% endblock content %}
