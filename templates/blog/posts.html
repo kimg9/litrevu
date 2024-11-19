@@ -47,10 +47,12 @@
                         Modifier
                     </button>
                 </a>
-                <button type="button"
-                    class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
-                    Supprimer
-                </button>
+                <a href="{% url 'delete_review_page' post.id %}">
+                    <button type="button"
+                        class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+                        Supprimer
+                    </button>
+                </a>
             </div>
         </div>
     </div>
@@ -74,10 +76,13 @@
                         Modifier
                     </button>
                 </a>
+                <a href="{% url 'delete_ticket_page' post.id %}">
                 <button type="button"
                     class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
                     Supprimer
                 </button>
+                </a>
+
             </div>
         </div>
     </div>

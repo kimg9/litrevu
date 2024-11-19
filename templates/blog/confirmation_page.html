@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<h3 class="text-xl font-bold my-4">Êtes-vous sûr(e) de vouloir supprimer {% if post.ticket %} cette critique {% else %}
+    ce ticket {% endif %}?</h3>
+
+<div class="flex flex-col gap-5 border border-solid border-grey p-2 mb-2 rounded p-4">
+{% if post.ticket %}
+    <div class="flex justify-between border-b">
+        <p class="text-sm"> {{ post.time_created|date:"H:i, d F Y" }}</p>
+    </div>
+    <p class="text-lg font-bold">{{ post.headline }} -
+        {% if post.rating %}
+        {{ post.rating }}
+        {% else %}
+        0 étoile
+        {% endif %}
+    </p>
+    <p>{{ post.body }}</p>
+{% else %}
+    <div class="flex justify-between border-b">
+        <p> {{ post.time_created|date:"H:i, d F Y" }}</p>
+    </div>
+    <p class="text-lg font-bold">{{ post.title }}</p>
+    <p>{{ post.description }}</p>
+    <div class="w-100 flex justify-center">
+        <img src="{% get_media_prefix %}{{ post.image }}" alt="{{ post.title }}" height="400px" width="200px" />
+    </div>
+{% endif %}
+</div>
+
+<form enctype="multipart/form-data" method="post" class="w-full">
+    {% csrf_token %}
+    <button type="submit" class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+        Supprimer
+    </button>
+    <a href="{% url 'posts' %}">
+        <button type="button" class="mt-4 text-white bg-green-950 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+            Retourner
+        </button>
+    </a>
+</form>
+
+{% if message %}
+<p class="text-red">{{ message }}</p>
+{% endif %}
+{% endblock content %}
