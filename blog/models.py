@@ -14,9 +14,6 @@ class Ticket(models.Model):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=user_directory_path)
     time_created = models.DateTimeField(auto_now_add=True)
-    
-    def get_absolute_url(self):
-        return reverse_lazy('update_ticket_page', kwargs={'post_id': self.id})
 
 
 class Review(models.Model):
@@ -29,9 +26,6 @@ class Review(models.Model):
     headline = models.CharField(max_length=128)
     body = models.TextField(max_length=8192, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
-    
-    def get_absolute_url(self):
-        return reverse_lazy('update_review_page', kwargs={'post_id': self.id})
 
 
 class UserFollows(models.Model):

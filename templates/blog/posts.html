@@ -41,7 +41,7 @@
         </div>
         <div class="flex justify-end w-100">
             <div class="flex gap-5">
-                <a href="{{ post.get_absolute_url }}">
+                <a href="{% url 'update_review_page' post.id %}">
                     <button type="button"
                         class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
                         Modifier
@@ -68,7 +68,7 @@
         </div>
         <div class="flex justify-end w-100">
             <div class="flex gap-5">
-                <a href="{{ post.get_absolute_url }}">
+                <a href="{% url 'update_ticket_page' post.id %}">
                     <button type="button"
                         class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
                         Modifier

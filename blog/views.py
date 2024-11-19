@@ -39,8 +39,8 @@ class TicketView:
             context={"form": form, "title": title, "message": message},
         )
 
-    def update_ticket_page(request, post_id):
-        ticket = get_object_or_404(Ticket, pk=post_id)
+    def update_ticket_page(request, pk):
+        ticket = get_object_or_404(Ticket, pk=pk)
         form = forms.TicketForm(instance=ticket)
         title = "Modifier un ticket"
         message = ""
@@ -57,6 +57,24 @@ class TicketView:
             context={"form": form, "title": title, "message": message},
         )
 
+    def delete_ticket_page(request, post_id):
+        ticket = get_object_or_404(Ticket, pk=post_id)
+        form = forms.TicketForm(instance=ticket)
+        title = "Modifier un ticket"
+        message = ""
+
+        if request.method == "POST":
+            ticket_form = forms.TicketForm(request.POST, instance=ticket)
+            if ticket_form.is_valid():
+                ticket_form.delete()
+                return redirect("posts")
+
+        return render(
+            request,
+            "blog/ticket.html",
+            context={"form": form, "title": title, "message": message},
+        )
+
 
 class PostsView:
     def posts_view_page(request):
@@ -64,6 +82,9 @@ class PostsView:
 
         tickets = Ticket.objects.filter(user=request.user)
         reviews = Review.objects.filter(user=request.user)
+
+        for review in reviews:
+            print(review.pk)
 
         star_rating = ""
         for review in reviews:
@@ -129,8 +150,8 @@ class ReviewView:
             context={"form": form, "formset": formset, "message": message},
         )
 
-    def update_review_page(request, post_id):
-        review = get_object_or_404(Review, pk=post_id)
+    def update_review_page(request, pk):
+        review = get_object_or_404(Review, pk=pk)
         ticket = review.ticket
         form = forms.ReviewForm(instance=review)
         message = ""
@@ -153,3 +174,28 @@ class ReviewView:
                 "message": message,
             },
         )
+
+    # def delete_review_page(request, post_id):
+    #     review = get_object_or_404(Review, pk=post_id)
+    #     ticket = review.ticket
+    #     form = forms.ReviewForm(instance=review)
+    #     message = ""
+
+    #     if request.method == "POST":
+    #         review_form = forms.ReviewForm(request.POST, instance=review)
+
+    #         if review_form.is_valid():
+    #             review_form.save()
+    #             return redirect("posts")
+
+    #             # message = "✅ Critique modifiée avec succès."
+
+    #     return render(
+    #         request,
+    #         "blog/reviews/update_review.html",
+    #         context={
+    #             "form": form,
+    #             "ticket": ticket,
+    #             "message": message,
+    #         },
+    #     )
