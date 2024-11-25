@@ -2,6 +2,24 @@
 {% block content %}
 {% load static %}
 
+{% if flux %}
+<div class="flex flex-col gap-5 justify-center items-center w-full">
+    <div id="up_buttons" class="flex gap-52">
+        <a href="{% url 'tickets' %}">
+            <button type="button" class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+                Demander une critique
+            </button>
+        </a>
+        <a href="{% url 'reviews' %}">
+            <button type="button" class="mt-4 text-white bg-amber-700 rounded-lg text-sm px-5 py-2.5 hover:bg-gray-900">
+                Créer une critique
+            </button>
+        </a>
+    </div>
+    <div id="flux_de_posts"></div>
+</div>
+{% endif %}
+
 {% if posts %}
 <div class="mt-4 flex flex-col gap-5">
     {% for post in posts%}

@@ -1,22 +1,19 @@
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.forms.models import modelformset_factory
+from django.views.generic import ListView
 
 from authentification.models import User
 from . import forms
 from .models import Review, Ticket, UserFollows
 
-
-class FluxView:
-    def view(request):
-        message = ""
-
-        return render(
-            request,
-            "blog/flux.html",
-            context={"message": message},
-        )
-
+def set_stars(reviews):
+    star_rating = ""
+    for review in reviews:
+        for _ in range(review.rating):
+            star_rating += "★"
+        review.rating = star_rating
+    return reviews
 
 class PostsView:
     def posts_view_page(request):
@@ -25,14 +22,7 @@ class PostsView:
         tickets = Ticket.objects.filter(user=request.user)
         reviews = Review.objects.filter(user=request.user)
 
-        for review in reviews:
-            print(review.pk)
-
-        star_rating = ""
-        for review in reviews:
-            for _ in range(review.rating):
-                star_rating += "★"
-            review.rating = star_rating
+        reviews = set_stars(reviews)
 
         posts = list(tickets) + list(reviews)
         sorted_posts = sorted(posts, key=lambda k: k.time_created, reverse=True)
@@ -206,4 +196,26 @@ class AbonnementView:
             request,
             "blog/abonnement.html",
             context={"message": message, "follows": follows, "followed_by": followed_by},
+        )
+
+class FluxView(ListView):
+    def get(self, request):
+        message = ""
+        
+        all_users = list(UserFollows.objects.filter(user=request.user).values_list('followed_user', flat=True))
+        all_users.append(request.user.id)
+        print(all_users)
+        tickets = Ticket.objects.filter(user__in=all_users)
+        reviews = Review.objects.filter(user__in=all_users)
+
+        reviews = set_stars(reviews)
+
+        posts = list(tickets) + list(reviews)
+        sorted_posts = sorted(posts, key=lambda k: k.time_created, reverse=True)
+
+        return render(
+            request,
+            "blog/posts.html",
+            context={"message": message, "posts": sorted_posts, "flux": True},
+
         )
