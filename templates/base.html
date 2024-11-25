@@ -15,7 +15,7 @@
         {% if user.is_authenticated %}
         <div class='flex flex-wrap items-center justify-between gap-5 w-full'>
             <p></p>
-            <a class='px-4 py-2 text-lg font-bold text-white' href="/">LITReview</a>
+            <a class='px-4 py-2 text-lg font-bold text-white' href="{% url 'flux' %}">LITReview</a>
             <div class='flex items-center justify-between gap-5'>
                 <a class='px-4 py-2 text-sm font-bold text-white' href="{% url 'flux' %}">Flux</a>
                 <a class='px-4 py-2 text-sm font-bold text-white' href="{% url 'posts' %}">Posts</a>
