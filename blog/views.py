@@ -7,6 +7,7 @@ from authentification.models import User
 from . import forms
 from .models import Review, Ticket, UserFollows
 
+
 def set_stars(reviews):
     star_rating = ""
     for review in reviews:
@@ -14,6 +15,7 @@ def set_stars(reviews):
             star_rating += "★"
         review.rating = star_rating
     return reviews
+
 
 class PostsView:
     def posts_view_page(request):
@@ -98,6 +100,7 @@ class ReviewView:
         )
 
         form = forms.ReviewForm()
+
         formset = ChoiceFormSet(queryset=Ticket.objects.none())
         message = ""
 
@@ -126,6 +129,28 @@ class ReviewView:
             request,
             "blog/reviews/create_review.html",
             context={"form": form, "formset": formset, "message": message},
+        )
+
+    def create_review_page_with_ctx(request, pk):
+        ticket = get_object_or_404(Ticket, pk=pk)
+        message = ""
+        form = forms.ReviewForm()
+
+        if request.method == "POST":
+            review_form = forms.ReviewForm(request.POST)
+
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.ticket = ticket
+                review.user = request.user
+                review.save()
+
+                return redirect("flux")
+
+        return render(
+            request,
+            "blog/reviews/create_review.html",
+            context={"form": form, "ticket": ticket, "message": message},
         )
 
     def update_review_page(request, pk):
@@ -174,37 +199,45 @@ class AbonnementView:
         follows = UserFollows.objects.filter(user=request.user)
         followed_by = UserFollows.objects.filter(followed_user=request.user)
         message = ""
-        
 
-        if 'search' in request.POST:
-            searched_username = request.POST['search']
+        if "search" in request.POST:
+            searched_username = request.POST["search"]
             try:
                 followed_user = User.objects.get(username=searched_username)
             except User.DoesNotExist:
                 message = "L'utilisateur recherché n'existe pas."
             else:
                 UserFollows.objects.create(
-                    user=request.user,
-                    followed_user=followed_user
+                    user=request.user, followed_user=followed_user
                 )
-        elif 'unsubscribe' in request.POST:
-            followed_user = request.POST['unsubscribe']
-            user_follow = get_object_or_404(UserFollows, user=request.user, followed_user_id=followed_user)
+        elif "unsubscribe" in request.POST:
+            followed_user = request.POST["unsubscribe"]
+            user_follow = get_object_or_404(
+                UserFollows, user=request.user, followed_user_id=followed_user
+            )
             user_follow.delete()
 
         return render(
             request,
             "blog/abonnement.html",
-            context={"message": message, "follows": follows, "followed_by": followed_by},
+            context={
+                "message": message,
+                "follows": follows,
+                "followed_by": followed_by,
+            },
         )
+
 
 class FluxView(ListView):
     def get(self, request):
         message = ""
-        
-        all_users = list(UserFollows.objects.filter(user=request.user).values_list('followed_user', flat=True))
+
+        all_users = list(
+            UserFollows.objects.filter(user=request.user).values_list(
+                "followed_user", flat=True
+            )
+        )
         all_users.append(request.user.id)
-        print(all_users)
         tickets = Ticket.objects.filter(user__in=all_users)
         reviews = Review.objects.filter(user__in=all_users)
 
@@ -213,9 +246,22 @@ class FluxView(ListView):
         posts = list(tickets) + list(reviews)
         sorted_posts = sorted(posts, key=lambda k: k.time_created, reverse=True)
 
+        for index, obj in enumerate(sorted_posts):
+            if isinstance(obj, Ticket):
+                try:
+                    has_review = Review.objects.get(ticket=obj)
+                except Review.DoesNotExist:
+                    has_review = False
+                else:
+                    has_review = True
+                sorted_posts.pop(index)
+                sorted_posts.insert(
+                    index,
+                    (obj, has_review),
+                )
+
         return render(
             request,
-            "blog/posts.html",
+            "blog/flux.html",
             context={"message": message, "posts": sorted_posts, "flux": True},
-
         )

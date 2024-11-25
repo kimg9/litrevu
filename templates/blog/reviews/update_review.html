@@ -12,7 +12,7 @@
             <div class="flex justify-center w-100">
                 <div class="w-4/5 border border-solid border-grey p-2 mb-2 rounded flex flex-col gap-3">
                     <div class="flex justify-between">
-                        <p> Ticket - {% if ticket.user == user %} Vous {% else %} {{ticket.user.username}} {% endif %}</p>
+                        <p> Ticket - {% if ticket.user == user %} Vous {% else %} {{ticket.user}} {% endif %}</p>
                         <p> {{ ticket.time_created|date:"H:i, d F Y" }}</p>
                     </div>
                     <p class="text-lg">{{ ticket.title }}</p>

@@ -1,10 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load crispy_forms_tags %}
+{% load static %}
+
 
 <div class="flex flex-col gap-5 justify-center items-center w-full">
     <h2 class="text-xl font-bold my-4">Créer une critique</h2>
     <form enctype="multipart/form-data" method="post" class="w-full">
+        {% if ticket %}
+        <div class="border border-solid border-grey p-2 mb-2 rounded">
+            <h3 class="font-black pb-3">Vous êtes en train de poster en réponse à</h3>
+            <div class="flex justify-center w-100">
+                <div class="w-4/5 border border-solid border-grey p-2 mb-2 rounded flex flex-col gap-3">
+                    <div class="flex justify-between">
+                        <p> Ticket - {% if ticket.user == user %} Vous {% else %} {{ticket.user}} {% endif %}</p>
+                        <p> {{ ticket.time_created|date:"H:i, d F Y" }}</p>
+                    </div>
+                    <p class="text-lg">{{ ticket.title }}</p>
+                    <div class="w-100 flex justify-center">
+                        <img src="{% get_media_prefix %}{{ ticket.image }}" alt="{{ post.ticket.title }}" 
+                            height="300px"
+                            width="150px" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         <div class="border border-solid border-grey p-2 mb-2 rounded">
             <h3 class="font-black pb-3">Livre/Article</h3>
             {{ formset|crispy }}
