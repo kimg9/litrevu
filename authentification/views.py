@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from authentification.models import User
 from . import forms
 
+
 class LoginView:
     def login_page(request):
         form = forms.LoginForm()
@@ -26,10 +27,12 @@ class LoginView:
             context={"form": form, "message": message},
         )
 
+
 class LogoutView:
     def logout_user(request):
         logout(request)
         return redirect("login")
+
 
 class InscriptionView:
     def inscription_user(request):
@@ -43,11 +46,11 @@ class InscriptionView:
                     password=form.cleaned_data["password"],
                 )
                 if user:
-                    message = (
-                        "Utilisateur créé avec succès !"
-                    )
+                    message = "Utilisateur créé avec succès !"
                 else:
-                    message = "Une erreur est survenue. Contactez l'administrateur du site."
+                    message = (
+                        "Une erreur est survenue. Contactez l'administrateur du site."
+                    )
         return render(
             request,
             "authentification/inscription.html",

@@ -37,10 +37,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'tailwind',
-    'theme',
-    'crispy_forms',
-    'crispy_tailwind',
+    "tailwind",
+    "theme",
+    "crispy_forms",
+    "crispy_tailwind",
     "authentification",
     "blog",
 ]
@@ -70,7 +70,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'django.template.context_processors.media',
+                "django.template.context_processors.media",
             ],
         },
     },
@@ -134,7 +134,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "authentification.User"
 
 # settings.py
-TAILWIND_APP_NAME = 'theme'
+TAILWIND_APP_NAME = "theme"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 

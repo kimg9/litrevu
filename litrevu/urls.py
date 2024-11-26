@@ -33,9 +33,29 @@ urlpatterns = [
     path("abonnements/", blog.AbonnementView.abonnement_view_page, name="abonnements"),
     path("tickets/", blog.TicketView.create_ticket_page, name="tickets"),
     path("reviews/", blog.ReviewView.create_review_page, name="reviews"),
-    path("review/<pk>/create", blog.ReviewView.create_review_page_with_ctx, name="create_review_page"),
-    path('review/<pk>/update', blog.ReviewView.update_review_page, name="update_review_page"),
-    path('ticket/<pk>/update', blog.TicketView.update_ticket_page, name="update_ticket_page"),
-    path('review/<pk>/delete', blog.ReviewView.delete_review_page, name="delete_review_page"),
-    path('ticket/<pk>/delete', blog.TicketView.delete_ticket_page, name="delete_ticket_page"),
+    path(
+        "review/<pk>/create",
+        blog.ReviewView.create_review_page_with_ctx,
+        name="create_review_page",
+    ),
+    path(
+        "review/<pk>/update",
+        blog.ReviewView.update_review_page,
+        name="update_review_page",
+    ),
+    path(
+        "ticket/<pk>/update",
+        blog.TicketView.update_ticket_page,
+        name="update_ticket_page",
+    ),
+    path(
+        "review/<pk>/delete",
+        blog.ReviewView.delete_review_page,
+        name="delete_review_page",
+    ),
+    path(
+        "ticket/<pk>/delete",
+        blog.TicketView.delete_ticket_page,
+        name="delete_ticket_page",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
