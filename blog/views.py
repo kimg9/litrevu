@@ -2,6 +2,8 @@ from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.forms.models import modelformset_factory
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from authentification.models import User
 from . import forms
@@ -17,8 +19,8 @@ def set_stars(reviews):
     return reviews
 
 
-class PostsView:
-    def posts_view_page(request):
+class PostsView(LoginRequiredMixin, ListView):
+    def get(self, request):
         message = ""
 
         tickets = Ticket.objects.filter(user=request.user)
@@ -36,7 +38,7 @@ class PostsView:
         )
 
 
-class TicketView:
+class TicketView(LoginRequiredMixin):
     def create_ticket_page(request):
         form = forms.TicketForm()
         title = "Créer un ticket"
@@ -93,7 +95,7 @@ class TicketView:
         )
 
 
-class ReviewView:
+class ReviewView(LoginRequiredMixin):
     def create_review_page(request):
         ChoiceFormSet = modelformset_factory(
             Ticket, validate_min=True, form=forms.TicketForm
@@ -194,7 +196,7 @@ class ReviewView:
         )
 
 
-class AbonnementView:
+class AbonnementView(LoginRequiredMixin):
     def abonnement_view_page(request):
         follows = UserFollows.objects.filter(user=request.user)
         followed_by = UserFollows.objects.filter(followed_user=request.user)
@@ -228,7 +230,7 @@ class AbonnementView:
         )
 
 
-class FluxView(ListView):
+class FluxView(LoginRequiredMixin, ListView):
     def get(self, request):
         message = ""
 
