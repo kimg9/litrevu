@@ -18,28 +18,23 @@ pip install -r requirements.txt
 
 ### Setup Environment Variables
 
-Create a `.env` file in the root directory and configure the following environment variables:
+Create a `.envrc` file in the root directory and configure the following environment variables:
 
 ```plaintext
-SECRET_KEY=your-secret-key
-DEBUG=False
-ALLOWED_HOSTS=your-domain.com,www.your-domain.com
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATIC_URL = BASE_DIR / "staticfiles"
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = BASE_DIR / "media"
+export SECRET_KEY=your-secret-key
+export DEBUG=True
+export STATIC_ROOT="./staticfiles"
+export STATIC_URL="./staticfiles"
+export MEDIA_ROOT="./media"
+export MEDIA_URL="./media"
 ```
 
 To setup the test database, please add following variable in your environement variables:
 ```plaintext
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "litrevu_test.db",
-    }
-}
+export DATABASE_ENGINE="django.db.backends.sqlite3"
+export DATABASE_NAME="./litrevu_test.db"
 ```
-If you want to setup your own database, you need configure that same variable but following [Django guidelines](https://docs.djangoproject.com/en/5.1/ref/databases/) to match your configuration.
+If you want to setup your own database, you need configure the same variables but following [Django guidelines](https://docs.djangoproject.com/en/5.1/ref/databases/) to match your configuration.
 
 You can use [django-environ](https://django-environ.readthedocs.io/) or any similar library to load these variables.
 
