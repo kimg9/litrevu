@@ -23,8 +23,7 @@ Create a `.envrc` file in the root directory and configure the following environ
 ```plaintext
 export SECRET_KEY=your-secret-key
 export DEBUG=True
-export STATIC_ROOT="./staticfiles"
-export STATIC_URL="./staticfiles"
+export STATIC_URL="theme/static/"
 export MEDIA_ROOT="./media"
 export MEDIA_URL="./media"
 ```

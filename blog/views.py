@@ -2,7 +2,6 @@ from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.forms.models import modelformset_factory
 from django.views.generic import ListView
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from authentification.models import User
@@ -66,7 +65,7 @@ class TicketView(LoginRequiredMixin):
         message = ""
 
         if request.method == "POST":
-            ticket_form = forms.TicketForm(request.POST, instance=ticket)
+            ticket_form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
             if ticket_form.is_valid():
                 ticket_form.save()
                 return redirect("posts")
